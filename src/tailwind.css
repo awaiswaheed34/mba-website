@@ -3,5 +3,5 @@
 @import 'tailwindcss/utilities';
 
 .section-1 {
-    clip-path: polygon(0 0, 100% 0%, 100% 87%, 0% 100%);
+    clip-path: polygon(0 0, 100% 0%, 100% 81%, 0% 100%);
 }
