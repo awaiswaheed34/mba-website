@@ -101,12 +101,11 @@ function Matrix() {
         </div> */}
 
         {/* Top label for "Value" */}
-        <div className="absolute left-0 top-6 -translate-y-full transform">
+        {/* <div className="absolute left-0 top-6 -translate-y-full transform">
           <span className="bg-white px-2 text-sm text-gray-500">Value</span>
-        </div>
+        </div> */}
         <div className="p-20">
-          <div className="border-r h-full border-8 border-blue-500"></div>
-          value
+          
         </div>
         <div className="relative bg-white p-6">
           <div
