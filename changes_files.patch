@@ -1,0 +1,1239 @@
+diff --git a/mba-website.zip b/mba-website.zip
+deleted file mode 100644
+index 833bee1..0000000
+Binary files a/mba-website.zip and /dev/null differ
+diff --git a/package-lock.json b/package-lock.json
+index 1227a2c..3a30c7b 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -19,6 +19,7 @@
+         "postcss": "^8.4.33",
+         "react": "^18.2.0",
+         "react-dom": "^18.2.0",
++        "react-helmet": "^6.1.0",
+         "react-hook-form": "^7.50.1",
+         "react-router-dom": "^6.22.0",
+         "react-scripts": "5.0.1",
+@@ -15423,6 +15424,25 @@
+       "resolved": "https://registry.npmjs.org/react-error-overlay/-/react-error-overlay-6.0.11.tgz",
+       "integrity": "sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg=="
+     },
++    "node_modules/react-fast-compare": {
++      "version": "3.2.2",
++      "resolved": "https://registry.npmjs.org/react-fast-compare/-/react-fast-compare-3.2.2.tgz",
++      "integrity": "sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ=="
++    },
++    "node_modules/react-helmet": {
++      "version": "6.1.0",
++      "resolved": "https://registry.npmjs.org/react-helmet/-/react-helmet-6.1.0.tgz",
++      "integrity": "sha512-4uMzEY9nlDlgxr61NL3XbKRy1hEkXmKNXhjbAIOVw5vcFrsdYbH2FEwcNyWvWinl103nXgzYNlns9ca+8kFiWw==",
++      "dependencies": {
++        "object-assign": "^4.1.1",
++        "prop-types": "^15.7.2",
++        "react-fast-compare": "^3.1.1",
++        "react-side-effect": "^2.1.0"
++      },
++      "peerDependencies": {
++        "react": ">=16.3.0"
++      }
++    },
+     "node_modules/react-hook-form": {
+       "version": "7.50.1",
+       "resolved": "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.50.1.tgz",
+@@ -15553,6 +15573,14 @@
+         }
+       }
+     },
++    "node_modules/react-side-effect": {
++      "version": "2.1.2",
++      "resolved": "https://registry.npmjs.org/react-side-effect/-/react-side-effect-2.1.2.tgz",
++      "integrity": "sha512-PVjOcvVOyIILrYoyGEpDN3vmYNLdy1CajSFNt4TDsVQC5KpTijDvWVoR+/7Rz2xT978D8/ZtFceXxzsPwZEDvw==",
++      "peerDependencies": {
++        "react": "^16.3.0 || ^17.0.0 || ^18.0.0"
++      }
++    },
+     "node_modules/react-transition-group": {
+       "version": "4.4.5",
+       "resolved": "https://registry.npmjs.org/react-transition-group/-/react-transition-group-4.4.5.tgz",
+diff --git a/package.json b/package.json
+index bc0cb3a..2c98073 100644
+--- a/package.json
++++ b/package.json
+@@ -14,6 +14,7 @@
+     "postcss": "^8.4.33",
+     "react": "^18.2.0",
+     "react-dom": "^18.2.0",
++    "react-helmet": "^6.1.0",
+     "react-hook-form": "^7.50.1",
+     "react-router-dom": "^6.22.0",
+     "react-scripts": "5.0.1",
+diff --git a/public/index.html b/public/index.html
+index aa069f2..0a6260d 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -2,7 +2,7 @@
+ <html lang="en">
+   <head>
+     <meta charset="utf-8" />
+-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
++    <link rel="icon" href="Logo - small.png" />
+     <meta name="viewport" content="width=device-width, initial-scale=1" />
+     <meta name="theme-color" content="#000000" />
+     <meta
+@@ -24,7 +24,7 @@
+       work correctly both with client-side routing and a non-root public URL.
+       Learn how to configure a non-root public URL by running `npm run build`.
+     -->
+-    <title>React App</title>
++    <title>Genius MBA Essay</title>
+   </head>
+   <body>
+     <noscript>You need to enable JavaScript to run this app.</noscript>
+diff --git a/src/App.css b/src/App.css
+index 74b5e05..9c4ac85 100644
+--- a/src/App.css
++++ b/src/App.css
+@@ -13,6 +13,7 @@
+   }
+ }
+ 
++
+ .App-header {
+   background-color: #282c34;
+   min-height: 100vh;
+@@ -35,4 +36,4 @@
+   to {
+     transform: rotate(360deg);
+   }
+-}
++}
+\ No newline at end of file
+diff --git a/src/Form.js b/src/Form.js
+index f621e7d..8477b5d 100644
+--- a/src/Form.js
++++ b/src/Form.js
+@@ -12,6 +12,10 @@ import {
+   Button,
+ } from "@mui/material";
+ import { Header, Footer } from "./Homepage";
++const handleClick = () => {
++  // Open index.html in a new tab
++  window.open('index.html');
++};
+ const MyForm = () => {
+   const { handleSubmit, control } = useForm();
+ 
+@@ -21,86 +25,212 @@ const MyForm = () => {
+   };
+ 
+   return (
+-    <div>
++    <div className="min-h-screen flex flex-col">
+ 
+-        <Header />
+-        <div className="w-11/12 mx-auto px-4">
++      <Header />
++      <div className="w-11/12 mx-auto px-4 mt-10 mb-5">
+ 
+-        <h1 className="text-4xl font-bold text-center mt-10 mb-5">
++        <h1 className="text-4xl font-bold text-center mb-5">
+ 
+-            <span className="text-[#665eff]">MBA</span> Application Form
++          <span className="text-[#665eff]">MBA</span> Application Form
+         </h1>
+         <p className="text-center text-gray-500 mb-10">
+-            Please fill out the form below to submit your application.
++          Please fill out the form below to submit your application.
+         </p>
+-    </div>
+-    <div className="w-11/12 mx-auto px-4">
+-    <div className="flex justify-center">
+-    <div className="w-1/2">
+-
+-    <form onSubmit={handleSubmit(onSubmit)}>
+-      <FormControl fullWidth>
+-        <TextField label="Name" />
+-      </FormControl>
+-
+-      <FormControl fullWidth>
+-        <TextField label="Email Address" />
+-      </FormControl>
+-
+-      <FormControl fullWidth>
+-        <TextField label="Mobile Number" />
+-      </FormControl>
+-
+-      {/* Repeat the same structure for other fields */}
+-
+-      <FormControl fullWidth>
+-        <InputLabel id="targetSchoolLabel">Target School</InputLabel>
+-        <Controller
+-          name="targetSchool"
+-          control={control}
+-          defaultValue=""
+-          render={({ field }) => (
+-            <Select labelId="targetSchoolLabel" {...field}>
+-              <MenuItem value="HBS">HBS</MenuItem>
+-              {/* Add other schools */}
+-            </Select>
+-          )}
+-        />
+-      </FormControl>
+-
+-      <FormControl fullWidth>
+-        <InputLabel id="preMbaIndustryLabel">Pre-MBA Industry</InputLabel>
+-        <Controller
+-          name="preMbaIndustry"
+-          control={control}
+-          defaultValue=""
+-          render={({ field }) => (
+-            <Select labelId="preMbaIndustryLabel" {...field}>
+-              <MenuItem value="Consulting">Consulting</MenuItem>
+-              {/* Add other industries */}
+-            </Select>
+-          )}
+-        />
+-      </FormControl>
+-
+-      {/* Repeat the same structure for other dropdowns */}
+-
+-      <FormControl component="fieldset" fullWidth>
+-        <InputLabel>Diversity</InputLabel>
+-        <FormGroup>
+-          <FormControlLabel control={<Checkbox />} label="First generation" />
+-          {/* Add other diversity options */}
+-        </FormGroup>
+-      </FormControl>
+-
+-      <Button type="submit" variant="contained" color="primary">
+-        Submit
+-      </Button>
+-    </form>
+-    </div>
+-    </div>
+-    </div>
+-    <Footer />
++      </div>
++      <div className="w-11/12 mx-auto px-4 mb-5">
++        <div className="flex justify-center">
++          <div className="w-1/2">
++
++            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
++              <FormControl fullWidth>
++                <TextField label="Name" className="w-full" />
++              </FormControl>
++
++              <FormControl fullWidth>
++                <TextField label="Email Address" className="w-full" />
++              </FormControl>
++
++              <FormControl fullWidth>
++                <TextField label="Mobile Number" className="w-full" />
++              </FormControl>
++
++              {/* Repeat the same structure for other fields */}
++              <FormControl fullWidth >
++                <InputLabel id="targetSchoolLabel" sx={{background:'white'}}>Target School</InputLabel>
++                <Controller
++                  name="targetSchool"
++                  control={control}
++                  defaultValue=""
++                  render={({ field }) => (
++                      <Select
++                        labelId="targetSchoolLabel"
++                        {...field}
++                        className="w-full"
++                        
++                        onChange={(e) => {
++                          field.onChange(e); // Update field value
++                          field.onBlur(); // Remove focus from the select dropdown to hide selected value
++                        }}
++                      >
++                        <MenuItem value="HBS">HBS</MenuItem>
++                        <MenuItem value="GSB">GSB</MenuItem>
++                        <MenuItem value="Columbia">Columbia</MenuItem>
++                        <MenuItem value="Wharton">Wharton</MenuItem>
++                        <MenuItem value="INSEAD">INSEAD</MenuItem>
++                      </Select>
++                  )}
++                />
++              </FormControl>
++
++              <FormControl fullWidth>
++                <InputLabel id="preMbaIndustryLabel" sx={{background:'white'}}>Pre-MBA Industry</InputLabel>
++                <Controller
++                  name="preMbaIndustry"
++                  control={control}
++                  defaultValue=""
++                  render={({ field }) => (
++                      <Select labelId="preMbaIndustryLabel" {...field} className="w-full"
++                        
++                        onChange={(e) => {
++                          field.onChange(e); // Update field value
++                          field.onBlur(); // Remove focus from the select dropdown to hide selected value
++                        }}>
++                        <MenuItem value="Consulting">Consulting</MenuItem>
++                        <MenuItem value="non-MBB">Consulting(non-MBB)</MenuItem>
++                        <MenuItem value="Consumer">Consumer product / Retail / E-commerce</MenuItem>
++                        <MenuItem value="Entrepreneurship">Entrepreneurship</MenuItem>
++                        <MenuItem value="Biotech">Healthcare / Biotech</MenuItem>
++                        <MenuItem value="Impact">Impact investing</MenuItem>
++                        <MenuItem value="Industry">Industry</MenuItem>
++                        <MenuItem value="Investment">Investment Banking</MenuItem>
++                        <MenuItem value="Military">Military</MenuItem>
++                        <MenuItem value="Non-Profit">Non-Profit / Government / Education</MenuItem>
++                        <MenuItem value="Private Equity">Private Equity</MenuItem>
++                        <MenuItem value="Technology">Technology</MenuItem>
++                        <MenuItem value="Venture Capital">Venture Capital</MenuItem>
++                        <MenuItem value="Other">Other</MenuItem>
++                      </Select>
++                  )}
++                />
++              </FormControl>
++
++              <FormControl fullWidth>
++                <InputLabel id="nationality" sx={{background:'white'}}>Nationality/Regional Background</InputLabel>
++                <Controller
++                  name="Nationality"
++                  control={control}
++                  defaultValue=""
++                  render={({ field }) => (
++                    <>
++                      <Select labelId="nationality" {...field} className="w-full"
++                        
++                        onChange={(e) => {
++                          field.onChange(e); // Update field value
++                          field.onBlur(); // Remove focus from the select dropdown to hide selected value
++                        }}>
++                        <MenuItem value="USA">United States</MenuItem>
++                        <MenuItem value="asia">Asia</MenuItem>
++                        <MenuItem value="eu">Europe</MenuItem>
++                        <MenuItem value="mex">Mexico, Central & South America</MenuItem>
++                        <MenuItem value="ca">Canada</MenuItem>
++                        <MenuItem value="ME">Middle East</MenuItem>
++                        <MenuItem value="africa">Africa</MenuItem>
++                        <MenuItem value="Oceania">Oceania</MenuItem>
++                      </Select>
++                    </>
++                  )}
++                />
++              </FormControl>
++
++              <FormControl fullWidth>
++                <InputLabel id="education" sx={{background:'white'}}>Education</InputLabel>
++                <Controller
++                  name="education"
++                  control={control}
++                  defaultValue=""
++                  render={({ field }) => (
++                    <>
++                      <Select labelId="education" {...field} className="w-full"
++                        onChange={(e) => {
++                          field.onChange(e); // Update field value
++                          field.onBlur(); // Remove focus from the select dropdown to hide selected value
++                        }}>
++                        <MenuItem value="eco">Economics</MenuItem>
++                        <MenuItem value="eng">Engineering</MenuItem>
++                        <MenuItem value="com">Business/Commerce</MenuItem>
++                        <MenuItem value="hum">Arts/Humanities</MenuItem>
++                        <MenuItem value="ss">Social Science</MenuItem>
++                        <MenuItem value="math">Math/Physical Sciences</MenuItem>
++                      </Select>
++                    </>
++                  )}
++                />
++              </FormControl>
++
++              <FormControl fullWidth>
++                <InputLabel id="PMG" sx={{background:'white'}}>Post-MBA Goals</InputLabel>
++                <Controller
++                  name="PMG"
++                  control={control}
++                  defaultValue=""
++                  render={({ field }) => (
++                    <>
++                      <Select labelId="PMG" {...field} className="w-full"
++                        onChange={(e) => {
++                          field.onChange(e); // Update field value
++                          field.onBlur(); // Remove focus from the select dropdown to hide selected value
++                        }}>
++                        <MenuItem value="na">N/A</MenuItem>
++                        <MenuItem value="consu">Consulting</MenuItem>
++                        <MenuItem value="ent">Entrepreneurship</MenuItem>
++                        <MenuItem value="Impact">Impact investing</MenuItem>
++                        <MenuItem value="Industry">Industry</MenuItem>
++                        <MenuItem value="Investment">Investment Banking</MenuItem>
++                        <MenuItem value="Non-Profit">Non-Profit / Government / Education</MenuItem>
++                        <MenuItem value="Private Equity">Private Equity</MenuItem>
++                        <MenuItem value="Venture Capital">Venture Capital</MenuItem>
++                        <MenuItem value="Other">Other</MenuItem>
++                      </Select>
++                    </>
++                  )}
++                />
++              </FormControl>
++
++              <FormControl fullWidth>
++                <InputLabel id="diversity" sx={{background:'white'}}>Diversity</InputLabel>
++                <Controller
++                  name="diversity"
++                  control={control}
++                  defaultValue=""
++                  render={({ field }) => (
++                    <>
++                      <Select labelId="diversity" {...field} className="w-full"
++                        onChange={(e) => {
++                          field.onChange(e); // Update field value
++                          field.onBlur(); // Remove focus from the select dropdown to hide selected value
++                        }}>
++                        <MenuItem value="fg" className="w-full">First Generation</MenuItem>
++                        <MenuItem value="lgbtq">LGBTQ+</MenuItem>
++                        <MenuItem value="AA">Asian American</MenuItem>
++                        <MenuItem value="bbc">Black or African American</MenuItem>
++                        <MenuItem value="hl">Hispanic or Latino</MenuItem>
++                        <MenuItem value="mr">Multi-Race</MenuItem>
++                        <MenuItem value="dis">Disability</MenuItem>
++                      </Select>
++                    </>
++                  )}
++                />
++              </FormControl>
++
++              <Button type="submit" variant="contained" color="primary" href=".">
++                Submit
++              </Button>
++            </form>
++          </div>
++        </div>
++      </div>
++      <Footer />
+     </div>
+   );
+ };
+diff --git a/src/Homepage.js b/src/Homepage.js
+index 40ec3a3..a0a2ece 100644
+--- a/src/Homepage.js
++++ b/src/Homepage.js
+@@ -22,13 +22,12 @@ const TestimonialItem = ({ image, name, rating, review }) => {
+     <div className="bg-white shadow-lg rounded-lg p-6">
+       <div className="flex items-center">
+         <Avatar>
+-          <Avatar src="//s3.amazonaws.com/www.starterstory.com/users/avatars/000/014/296/thumbnail/nadeef-ahmad.jpg?1688788968" />{" "}
+-          /{" "}
++          <img src={image} />
+         </Avatar>
+ 
+         <h3 className="text-xl items-center p-5 font-bold ">{name}</h3>
+       </div>
+-      <p className="text-yellow-500 mb-4">{rating}</p>
++      <p className="text-yellow-500 mb-4 font-extrabold text-xl">{rating}</p>
+       <p className="text-gray-600">{review}</p>
+     </div>
+   );
+@@ -39,124 +38,219 @@ const AboutUsSection = () => {
+     <section className="container mx-auto px-6 py-12" id="about">
+       <h2 className="text-3xl font-bold text-center mb-8">About Us</h2>
+       <p className="text-lg text-gray-700 mb-6">
+-        <b>Unlock the mysterious world of MBA applications without breaking the
+-        bank! </b> Forget shelling out thousands on an MBA coach – we've got your
+-        back with a budget-friendly alternative (or complement) to those
+-        sky-high consulting fees.
++        <b>
++          Unlock the mysterious world of MBA applications without breaking the
++          bank!{" "}
++        </b>{" "}
++        Forget shelling out thousands on an MBA coach – we've got your back with
++        a budget-friendly alternative (or complement) to those sky-high
++        consulting fees.
+       </p>
+       <p className="text-lg text-gray-700 mb-6">
+-        <b>Dive into successful applicants’ essays to see the real storytelling
+-        skills you need!</b> Embark on a journey behind the scenes, where real
+-        applicants reveal the ins and outs of their triumphant MBA narratives,
+-        how they wowed the admissions gods and secured a spot in their dream MBA
+-        program. No biased consultants here – just authentic, unfiltered tales
+-        from the MBA battlefield.
++        <b>
++          Dive into successful applicants’ essays to see the real storytelling
++          skills you need!
++        </b>{" "}
++        Embark on a journey behind the scenes, where real applicants reveal the
++        ins and outs of their triumphant MBA narratives, how they wowed the
++        admissions gods and secured a spot in their dream MBA program. No biased
++        consultants here – just authentic, unfiltered tales from the MBA
++        battlefield.
+       </p>
+       <p className="text-lg text-gray-700">
+-        <b> Discover the secrets of triumph from individuals who walked a similar
+-        path pre-MBA.</b> Whether you're a number-crunching finance guru or a
+-        consultant mastermind, we've got essays from people with a similar
+-        background [yes, seeing how a veteran sold her deployment experience to
+-        get into Harvard is not helpful if you don’t have experience].
++        <b>
++          {" "}
++          Discover the secrets of triumph from individuals who walked a similar
++          path pre-MBA.
++        </b>{" "}
++        Whether you're a number-crunching finance guru or a consultant
++        mastermind, we've got essays from people with a similar background [yes,
++        seeing how a veteran sold her deployment experience to get into Harvard
++        is not helpful if you don’t have experience].
+       </p>
+     </section>
+   );
+ };
+ 
+-const ServicesSection = () => {
++const ImageGallery = () => {
+   return (
+-    <section className="container mx-auto px-6 py-12" id="services">
+-      <h2 className="text-3xl font-bold text-center mb-8">Our Services</h2>
+-      <div className="flex flex-col lg:flex-row">
+-        <div className="flex lg:w-5/12">
+-          <div className="bg-white shadow-lg rounded-lg p-6 ">
+-            <h3 className="text-2xl font-bold mb-2">Essay Revision</h3>
+-            <p className="text-lg text-gray-700 mb-6"><b>$49 per revision</b></p>
+-            <p className="text-gray-600">
+-              Struggling to turn your MBA essay from 'meh' to 'marvelous'? For
+-              just $49, our essay revision service is your secret weapon!
+-              Imagine a dream team of former MBA whizzes, armed with red pens
+-              and killer instincts, ready to transform your essay from drab to
+-              fab. We don't just pinpoint typos; we tell you how to add the
+-              zing, zap, and zoom your essay needs to stand out. Think of us as
+-              your personal trainers for your words – except we promise no heavy
+-              lifting. Say goodbye to sleepless nights and hello to a
+-              masterpiece. Let's give the admissions committee something to talk
+-              about!
+-            </p>
++    <div className="flex flex-col justify-center items-center ">
++      <div>
++        <b><p>Trusted by non-traditional applicants and employees from leading pre-MBA firms</p></b>
++      </div>
++      <div className="flex justify-center items-center p-4 w-4/5">
++        <img src="i.png" alt="Image 1" style={{ width: '10%', height: '90%' }} className="mr-4" />
++        <img src="j1.png" alt="Image 2" style={{ width: '12%', height: '90%' }} className="mr-4" />
++        <img src="k.png" alt="Image 3" style={{ width: '12%', height: '90%' }} className="mr-4" />
++        <img src="l.png" alt="Image 4" style={{ width: '12%', height: '90%' }} className="mr-4" />
++        <img src="m1.png" alt="Image 5" style={{ width: '12%', height: '90%' }} className="mr-4" />
++        <img src="n.png" alt="Image 6" style={{ width: '12%', height: '90%' }} className="mr-4" />
++        <img src="o.png" alt="Image 7" style={{ width: '12%', height: '90%' }} />
++      </div>
++    </div>
++  );
++};
++
++function Matrix() {
++  return (
++    <div className="flex justify-center">
++      <div className="flex w-10/12">
++        <div className=" inset-0 flex items-center">
++          <div className="w-0 h-full border-r border-gray-300 absolute left-1/2 transform -translate-x-1/2" />
++          <div className="w-0 h-0 border-t border-l transparent border-solid border-gray-300 absolute left-1/2 transform -translate-x-1/2" />
++        </div>
++
++        {/* Top label for "Value" */}
++        <div className="absolute left-0 top-6 -translate-y-full transform">
++          <span className="bg-white px-2 text-sm text-gray-500">Value</span>
++        </div>
++        <div className="p-20">
++          <div className="border-r h-full border-8 border-blue-500"></div>
++          value
++        </div>
++        <div className="relative bg-white p-6">
++          <div
++            aria-hidden="true"
++            className="absolute inset-0 flex items-center"
++          >
++            <div className="w-full border-t  border-gray-300" />
+           </div>
+-          <div className="bg-white shadow-lg rounded-lg p-6">
+-            <h3 className="text-2xl font-bold mb-2">Essay Revision</h3>
+-            <p className="text-lg text-gray-700 mb-6">$40 per revision</p>
+-            <p className="text-gray-600">
+-              Struggling to turn your MBA essay from 'meh' to 'marvelous'? For
+-              just $49, our essay revision service is your secret weapon!
+-              Imagine a dream team of former MBA whizzes, armed with red pens
+-              and killer instincts, ready to transform your essay from drab to
+-              fab. We don't just pinpoint typos; we tell you how to add the
+-              zing, zap, and zoom your essay needs to stand out. Think of us as
+-              your personal trainers for your words – except we promise no heavy
+-              lifting. Say goodbye to sleepless nights and hello to a
+-              masterpiece. Let's give the admissions committee something to talk
+-              about!
+-            </p>
++          <div className="absolute inset-0 flex justify-center">
++            <div className="h-full border-r border-gray-300" />
+           </div>
+-        </div>
+-        <div className="grid grid-rows-3 gap-6 lg:w-7/12">
+-          <div className="bg-white shadow-lg rounded-lg p-6">
+-            <h3 className="text-2xl font-bold mb-2">Mock Interviews</h3>
+-            <p className="text-lg text-gray-700 mb-6">
+-              <b> From $99</b> (or success fee only)
+-            </p>
+-            <p className="text-gray-600">
+-              Gear up for your dream school interview like a pro! <b> Dive into our
+-              world of affordable mock interviews ($99 each) or grab our
+-              fantastic risk-free deal</b> ($999 for 3 mock interviews that not only
+-              sharpen your skills but also come with a guarantee. That's right,
+-              if your dream school doesn't extend that coveted offer, we'll
+-              gladly refund the investment. It's a win-win, or as we like to
+-              call it, a win-try-and-get-your-money-back)! Meet our interview
+-              experts – real MVPs who aced their own interviews and are here to
+-              pass on the secrets. Don't leave your dreams to chance, practice
+-              with those who've been there, done that, and are ready to help you
+-              nail it too. Let's turn those interview nerves into interview
+-              cheers! 🚀💼
+-            </p>
++          <div className="absolute left-0 top-6 -translate-y-full transform">
++            <span className="bg-white px-2 text-sm text-gray-500">Value</span>
+           </div>
+-          <div className="bg-white shadow-lg rounded-lg p-6">
+-            <h3 className="text-2xl font-bold mb-2">Recommendation Letters</h3>
+-            <p className="text-lg text-gray-700 font-bold mb-6">
+-              $49 per letter
+-            </p>
+-            <p className="text-gray-600">
+-              <b>Feel like your recommenders need a nudge in the right direction? </b>
+-               Why not inspire them with real samples that scored big? Snag our
+-              recommendation letter samples for just $49 each! Some savvy
+-              applicants crafted these gems themselves, or maybe their mentors
+-              spilled the secret sauce. Either way, it's top-notch inspiration
+-              for your recommenders to shine! 🌟📄
+-            </p>
++          <div className="absolute bottom-6 right-0 -translate-x-full transform">
++            <span className="bg-white px-2 text-sm text-gray-500">Price</span>
+           </div>
+-          <div className="bg-white shadow-lg rounded-lg p-6">
+-            <h3 className="text-2xl font-bold mb-2">Holistic Review</h3>
+-            <p className="text-lg text-gray-700 mb-6"><b>From $299</b> (or success fee only)</p>
+-            <p className="text-gray-600">
+-              Gear up for your dream school interview like a pro! Dive into our
+-              world of affordable mock interviews ($99 each) or grab our
+-              fantastic risk-free deal ($999 for 3 mock interviews that not only
+-              sharpen your skills but also come with a guarantee. That's right,
+-              if your dream school doesn't extend that coveted offer, we'll
+-              gladly refund the investment. It's a win-win, or as we like to
+-              call it, a win-try-and-get-your-money-back)! Meet our interview
+-              experts – real MVPs who aced their own interviews and are here to
+-              pass on the secrets. Don't leave your dreams to chance, practice
+-              with those who've been there, done that, and are ready to help you
+-              nail it too. Let's turn those interview nerves into interview
+-              cheers! 🚀💼
+-            </p>
++          <div className="grid grid-cols-2 grid-rows-2 gap-4">
++            <div className="flex flex-col items-center justify-center">
++              <div className="bg-[#6b5de7] text-white px-4 py-2 rounded shadow">
++                <p className="font-bold">Best value-for-money</p>
++              </div>
++              <div className="mt-4 p-4 bg-gray-100 rounded shadow text-center">
++                <p className="font-semibold">Insert logo</p>
++              </div>
++            </div>
++            <div className="flex flex-col items-center justify-center">
++              <div className="mt-4 p-4 bg-gray-100 rounded shadow text-center">
++                <p className="font-semibold">MBA Coaches – the Good</p>
++                <p className="text-xs mt-2">
++                  Help in your application shouldn't be an expensive luxury...
++                </p>
++              </div>
++            </div>
++            <div className="flex flex-col items-center justify-center">
++              <div className="mt-4 p-4 bg-gray-100 rounded shadow text-center">
++                <p className="font-semibold">
++                  Feedback from your girl/boyfriend
++                </p>
++                <p className="text-xs mt-2">
++                  That's why people say “you get what you pay for”...
++                </p>
++              </div>
++            </div>
++            <div className="flex flex-col items-center justify-center">
++              <div className="mt-4 p-4 bg-gray-100 rounded shadow text-center">
++                <p className="font-semibold">
++                  MBA Coaches – the Bad and the Ugly
++                </p>
++                <p className="text-xs mt-2">
++                  Expensive and unhelpful doesn't sound good
++                </p>
++              </div>
++            </div>
+           </div>
+         </div>
+       </div>
++    </div>
++  );
++}
++const ServicesSection = () => {
++  return (
++    <section className="container mx-auto px-6 py-12" id="services">
++      <h2 className="text-3xl font-bold text-center mb-8">Our Services</h2>
++      <div className=" flex gap-8">
++        <div className="bg-white shadow-lg rounded-lg p-6 col-start-1 mx-3">
++          <h3 className="text-2xl font-bold mb-2">Essay Revision</h3>
++          <p className="text-lg text-gray-700 mb-6">
++            <b>$49 per revision</b>
++          </p>
++          <p className="text-gray-600"><div>
++          <b>Struggling to turn your MBA essay from 'meh' to 
++          'marvelous'?</b> For just $49, our essay revision service is your secret weapon! I
++          magine a dream team of former MBA whizzes,
++           armed with red pens and killer instincts
++          , ready to transform your essay from drab to fab. We don't just pinpoint typos; 
++          we tell you how to add the zing, zap, and zoom your essay needs to stand out.
++           Think of us as your personal trainers for your words – except we promise no heavy lifting.
++           <b>Say goodbye to sleepless nights and hello to a masterpiece.</b>
++           Let's give the admissions committee something to talk about!
++           </div></p>
++        </div>
++        <div className="bg-white shadow-lg rounded-lg p-6 col-start-2 mx-3">
++          <h3 className="text-2xl font-bold mb-2">Essay Bank</h3>
++          <b><p className="text-lg text-gray-700 mb-6">$29 per revision</p></b>
++          <p className="text-gray-600"><div>
++          <b>While your profile is one-of-a-kind, past successful MBA applicants share similarities with your background.</b> Let their success stories inspire your own narrative!
++Navigate through our extensive essay library to find the perfect match for your background. <b>Explore our Essay Bank, where individual gems await at just $29 each.</b>
++Why settle for generic when you can resonate with someone who's walked a similar path? Your quest for an outstanding essay begins here, where resonance meets excellence! 🚀📝
++
++</div></p>
++        </div>
++      </div>
++      <div className="">
++        <div className="bg-white shadow-lg rounded-lg my-1 p-6">
++          <h3 className="text-2xl font-bold mb-2">Mock Interviews</h3>
++          <p className="text-lg text-gray-700 mb-6">
++            <b> From $99</b> (or success fee only)
++          </p>
++          <p className="text-gray-600">
++            Gear up for your dream school interview like a pro!{" "}
++            <b>
++              {" "}
++              Dive into our world of affordable mock interviews ($99 each) or
++              grab our fantastic risk-free deal
++            </b>{" "}
++            ($999 for 3 mock interviews that not only sharpen your skills but
++            also come with a guarantee. That's right, if your dream school
++            doesn't extend that coveted offer, we'll gladly refund the
++            investment. It's a win-win, or as we like to call it, a
++            win-try-and-get-your-money-back)! Meet our interview experts –
++            real MVPs who aced their own interviews and are here to pass on
++            the secrets. Don't leave your dreams to chance, practice with
++            those who've been there, done that, and are ready to help you nail
++            it too. Let's turn those interview nerves into interview cheers!
++            🚀💼
++          </p>
++        </div>
++        <div className="bg-white shadow-lg rounded-lg my-1 p-6">
++          <h3 className="text-2xl font-bold mb-2">Recommendation Letters</h3>
++          <p className="text-lg text-gray-700 font-bold mb-6">
++            $49 per letter
++          </p>
++          <p className="text-gray-600">
++            <b>
++              Feel like your recommenders need a nudge in the right direction?{" "}
++            </b>
++            Why not inspire them with real samples that scored big? Snag our
++            recommendation letter samples for just $49 each! Some savvy
++            applicants crafted these gems themselves, or maybe their mentors
++            spilled the secret sauce. Either way, it's top-notch inspiration
++            for your recommenders to shine! 🌟📄
++          </p>
++        </div>
++        <div className="bg-white shadow-lg rounded-lg my-1 p-6">
++          <h3 className="text-2xl font-bold mb-2">Holistic Review</h3>
++          <p className="text-lg text-gray-700 mb-6">
++            <b>From $299</b> (or success fee only)
++          </p>
++          <p className="text-gray-600"><div>
++          <b>Ready to give your application the VIP treatment?</b> Dive into our Holistic Review service! For $299 (or $999 but you only pay if you get an offer from your dream school), our experts <b>will scrutinize every nook and cranny of your application, ensuring it's a standout in the admissions lineup.</b> We're not fortune tellers, but we know what catches eyes and leaves a lasting impression. <b>Let's turn your application into a masterpiece – a symphony of experiences, achievements, and personality.</b> Because it's not just about applying; it's about making a statement. Don't leave it to chance; let's make your entire application unforgettable! 🌟🎓
++          </div></p>
++        </div>
++      </div>
+     </section>
+   );
+ };
+@@ -164,11 +258,14 @@ const ServicesSection = () => {
+ const TestimonialsSection = ({ testimonials }) => {
+   return (
+     <section className="container mx-auto px-6 py-12" id="testimonials">
+-      <h2 className="text-3xl font-bold text-center mb-8">Testimonials</h2>
++      <h2 className="text-3xl font-bold text-center mb-8">
++        Don’t take our word for it…
++      </h2>
+       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+         {testimonials.map((testimonial, index) => (
+           <TestimonialItem
+             key={index}
++            image={testimonial.image}
+             name={testimonial.name}
+             rating={testimonial.rating}
+             review={testimonial.review}
+@@ -211,11 +308,11 @@ const TopHeader = () => {
+               fill-rule="evenodd"
+             ></path>
+           </svg>
+-          4,418+ online business case studies
++          500+ top-quality essays
+         </div>
+         <div class="flex text-sm text-green-500 space-x-2">
+           ★★★★★
+-          <div class="flex text-white ml-2">Used by 12,568 happy customers</div>
++          <div class="flex text-white ml-2">Used by 2,468 happy clients</div>
+         </div>
+         <div class="flex text-sm text-white">
+           <svg
+@@ -230,7 +327,7 @@ const TopHeader = () => {
+               fill-rule="evenodd"
+             ></path>
+           </svg>
+-          $10,842,423,564+ total revenue of all case studies
++          600+ clients accepted into top business schools
+         </div>
+       </div>
+     </div>
+@@ -239,31 +336,16 @@ const TopHeader = () => {
+ 
+ const HelpedSection = () => {
+   return (
+-    <div className="flex flex-col w-full items-center ">
+-      <div className="flex justify-center font-semibold text-lg">
+-        <h1>
+-          Helped 600+ MBA applicants getting accepted into their dream schools
+-        </h1>
++    <div className="flex flex-col justify-center items-center">
++      <div>
++        <b><p>Trusted by non-traditional applicants and employees from leading pre-MBA firms</p></b>
+       </div>
+-      <div className="flex justify-between w-10/12">
+-        <div className="w-40">
+-          <img src="https://logos-world.net/wp-content/uploads/2021/01/Harvard-Logo.png" />
+-        </div>
+-        <div className="w-40">
+-          <img src="https://logos-world.net/wp-content/uploads/2021/01/Harvard-Logo.png" />
+-        </div>
+-        <div className="w-40">
+-          <img src="https://logos-world.net/wp-content/uploads/2021/01/Harvard-Logo.png" />
+-        </div>
+-        <div className="w-40">
+-          <img src="https://logos-world.net/wp-content/uploads/2021/01/Harvard-Logo.png" />
+-        </div>
+-        <div className="w-40">
+-          <img src="https://logos-world.net/wp-content/uploads/2021/01/Harvard-Logo.png" />
+-        </div>
+-        <div className="w-40">
+-          <img src="https://logos-world.net/wp-content/uploads/2021/01/Harvard-Logo.png" />
+-        </div>
++      <div className="flex justify-center items-center p-4 w-4/5">
++        <img src="e1.png" alt="Image 5" style={{ width: '15%', height: '40%' }} className="mr-4" />
++        <img src="a.png" alt="Image 1" style={{ width: '15%', height: '25%' }} className="mr-4" />
++        <img src="b.png" alt="Image 2" style={{ width: '15%', height: '60%' }} className="mr-4" />
++        <img src="c1.png" alt="Image 3" style={{ width: '15%', height: '25%' }} className="mr-4" />
++        <img src="d.png" alt="Image 4" style={{ width: '15%', height: '60%' }} className="" />
+       </div>
+     </div>
+   );
+@@ -272,49 +354,98 @@ const HelpedSection = () => {
+ export const Header = () => {
+   return (
+     <nav className="bg-[#665eff] sticky top-0 z-50">
+-        <div className="w-11/12 mx-auto px-4">
+-          <div className="flex justify-between">
+-            <div className="flex space-x-7">
+-              <div>
+-                <a className="flex items-center py-4 px-2" href="/">
+-                  <img
+-                    alt="Logo"
+-                    className="h-8 w-8 mr-2"
+-                    src="/placeholder.svg"
+-                  />
+-                  <span className="font-semibold text-white text-lg">
+-                    Starter Story
+-                  </span>
+-                </a>
+-              </div>
++      <div className="w-11/12 mx-auto px-4">
++        <div className="flex justify-between">
++          <div className="flex space-x-7">
++            <div>
++              <a className="flex items-center py-4 px-2" href="/">
++                <img
++                  alt="Logo"
++                  className="h-8 w-8 mr-2"
++                  src="Logo - white background.png"
++                />
++                <span className="font-semibold text-white text-lg">
++                  Genius MBA Essay
++                </span>
++              </a>
+             </div>
+-            <div className="hidden md:flex items-center space-x-1">
++          </div>
++          <div className="hidden md:flex items-center space-x-1">
++            <a
++              className="py-4 px-2  text-white hover:text-green-500 font-semibold "
++              href="/#about"
++            >
++              About Us
++            </a>
++            <a
++              className="py-4 px-2  text-white font-semibold hover:text-green-500 onClick:border-b-4 border-green-500 transition duration-300"
++              href="/#services"
++            >
++              Services
++            </a>
++            <a
++              className="py-4 px-2  text-white font-semibold hover:text-green-500 transition duration-300"
++              href="/#faqs"
++            >
++              FAQs
++            </a>
++            <a
++              className="py-4 px-2  text-white font-semibold hover:text-green-500 transition duration-300"
++              href="/essayBank"
++            >
++              Essay Bank
++            </a>
++            <a
++              className="py-4 px-2  text-white font-semibold hover:text-green-500 transition duration-300"
++              href="/mbaGraduates"
++            >
++              MBA Graduates
++            </a>
++          </div>
++        </div>
++      </div>
++    </nav>
++  );
++};
++
++export const Footer = () => {
++  return (
++    <footer className="bg-black">
++      <div className="container flex  justify-between items-center mx-auto px-6 py-4">
++        <div className="flex flex-col lg:justify-end text-white ">
++          © 2024 MBA Essay Genius. All rights reserved
++        </div>
++        <div className="flex items-right">
++          <div className="flex flex-col lg:justify-end">
++            <div className="hidden md:flex lg:flex-col py-4  lg:justify-end ">
+               <a
+-                className="py-4 px-2  text-white hover:text-green-500 font-semibold "
+-                href="/#about"
++                className="py-1 px-2   text-white font-semibold "
++                href="#about"
+               >
+                 About Us
+               </a>
+               <a
+-                className="py-4 px-2  text-white font-semibold hover:text-green-500 onClick:border-b-4 border-green-500 transition duration-300"
+-                href="/#services"
++                className="py-1 px-2  text-white font-semibold hover:text-green-500 onClick:border-b-4 border-green-500 transition duration-300"
++                href="#services"
+               >
+                 Services
+               </a>
+               <a
+-                className="py-4 px-2  text-white font-semibold hover:text-green-500 transition duration-300"
++                className="py-1 px-2  text-white font-semibold hover:text-green-500 transition duration-300"
+                 href="/#faqs"
+               >
+                 FAQs
+               </a>
++
+               <a
+-                className="py-4 px-2  text-white font-semibold hover:text-green-500 transition duration-300"
++                className="py-1 px-2  text-white font-semibold hover:text-green-500 transition duration-300"
+                 href="/essayBank"
++                
+               >
+                 Essay Bank
+               </a>
+               <a
+-                className="py-4 px-2  text-white font-semibold hover:text-green-500 transition duration-300"
++                className="py-1 px-2  text-white font-semibold hover:text-green-500 transition duration-300"
+                 href="/mbaGraduates"
+               >
+                 MBA Graduates
+@@ -322,59 +453,11 @@ export const Header = () => {
+             </div>
+           </div>
+         </div>
+-      </nav>
++      </div>
++    </footer>
+   );
+ };
+ 
+-export const Footer = () => {
+-  return (
+-    <footer className="bg-black">
+-        <div className="container mx-auto px-6 py-4">
+-          <div className="flex flex-col items-right">
+-            <div className="flex flex-col">
+-              <div className="hidden md:flex justify-end ">
+-                <div className="flex flex-col mr-5">
+-                  <a
+-                    className="py-4 px-2   text-white font-semibold "
+-                    href="#about"
+-                  >
+-                    About Us
+-                  </a>
+-                  <a
+-                    className="py-4 px-2  text-white font-semibold hover:text-green-500 onClick:border-b-4 border-green-500 transition duration-300"
+-                    href="#services"
+-                  >
+-                    Services
+-                  </a>
+-                  <a
+-                    className="py-4 px-2  text-white font-semibold hover:text-green-500 transition duration-300"
+-                    href="#faqs"
+-                  >
+-                    FAQs
+-                  </a>
+-                </div>
+-                <div className="flex flex-col justify-start">
+-                  <a
+-                    className="py-4 px-2  text-white font-semibold hover:text-green-500 transition duration-300"
+-                    href="#faqs"
+-                  >
+-                    Essay Bank
+-                  </a>
+-                  <a
+-                    className="py-4 px-2  text-white font-semibold hover:text-green-500 transition duration-300"
+-                    href="#faqs"
+-                  >
+-                    MBA Graduates
+-                  </a>
+-                </div>
+-              </div>
+-            </div>
+-          </div>
+-        </div>
+-      </footer>
+-  );
+-}
+-
+ function HomePage() {
+   const reviews = ["Great product!", "Excellent service!", "Love it!"];
+ 
+@@ -393,36 +476,42 @@ function HomePage() {
+ 
+   const testimonials = [
+     {
++      image: "1.png",
+       name: "GSB Class of 2024",
+       rating: "★★★★★",
+       review:
+         "I was totally lost when I started drafting my essay. After reading five essays from successful applicants with a similar background, I got many ideas on how to best share my personal story. 100% recommend MBA Essay Genius!",
+     },
+     {
+-      name: "NaHBS Class of 2025",
++      image: "2.png",
++      name: "HBS Class of 2025",
+       rating: "★★★★★",
+       review:
+         "Having a PE background, I know that companies offering services on a 'success fee' basis truly believe in their value. I did the mock interviews for free and was super happy to pay MBA Essay Genius after getting the 'YES!' from Harvard.",
+     },
+     {
++      image: "3.png",
+       name: "HBS Class of 2024",
+       rating: "★★★★★",
+       review:
+         "The essay bank is such a great idea. I know MBB consultants share resources, but as someone from a non-traditional background, it was super helpful to see how spectacular essays from successful MBA applicants are.",
+     },
+     {
++      image: "4.png",
+       name: "Wharton Class of 2025",
+       rating: "★★★★★",
+       review:
+         "This was a game-changer for me! I purchased a few essay samples and then the essay revision service. I 100% recommend it. Their comprehensive review and suggestions helped me articulate my story clearly, making my application much stronger.",
+     },
+     {
++      image: "5.png",
+       name: "HBS Class of 2025",
+       rating: "★★★★★",
+       review:
+         "I was impressed by the breadth of approaches to Harvard’s essay (it was kind of addictive, tbh!). It was great to read different personal stories from previous MBA graduates and understand which style suited me best.",
+     },
+     {
++      image: "6.png",
+       name: "GSB Class of 2025",
+       rating: "★★★★★",
+       review:
+@@ -446,45 +535,11 @@ function HomePage() {
+             </p>
+             <div className="mt-8 md:mt-12">
+               <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg">
+-                Join Our Community
++                <a href="/essayBank"> MBA Essay Bank</a>
+               </button>
+             </div>
+             <div className="mt-4">
+-              <span>Join thousands of founders</span>
+-              <div className="flex mt-4">
+-                <Avatar>
+-                  <Avatar src="//s3.amazonaws.com/www.starterstory.com/users/avatars/000/014/296/thumbnail/nadeef-ahmad.jpg?1688788968" />{" "}
+-                  /{" "}
+-                </Avatar>
+-                <Avatar>
+-                  <Avatar
+-                    alt="Founder 3"
+-                    src="//s3.amazonaws.com/www.starterstory.com/users/avatars/000/014/296/thumbnail/nadeef-ahmad.jpg?1688788968"
+-                  />{" "}
+-                  /{" "}
+-                </Avatar>
+-                <Avatar>
+-                  <Avatar
+-                    alt="Founder 4"
+-                    src="//s3.amazonaws.com/www.starterstory.com/users/avatars/000/014/296/thumbnail/nadeef-ahmad.jpg?1688788968"
+-                  />{" "}
+-                  /{" "}
+-                </Avatar>
+-                <Avatar>
+-                  <Avatar
+-                    alt="Founder 5"
+-                    src="//s3.amazonaws.com/www.starterstory.com/users/avatars/000/014/296/thumbnail/nadeef-ahmad.jpg?1688788968"
+-                  />{" "}
+-                  /{" "}
+-                </Avatar>
+-                <Avatar>
+-                  <Avatar
+-                    alt="Founder 5"
+-                    src="//s3.amazonaws.com/www.starterstory.com/users/avatars/000/014/296/thumbnail/nadeef-ahmad.jpg?1688788968"
+-                  />{" "}
+-                  /{" "}
+-                </Avatar>
+-              </div>
++              <span>Proves Essays, Proven Success</span>
+             </div>
+           </div>
+           {/* move this to the right */}
+@@ -505,9 +560,10 @@ function HomePage() {
+       </header>
+       <main className="mb-auto">
+         <HelpedSection />
++        <Matrix />
+         <AboutUsSection />
+         <ServicesSection />
+-        <HelpedSection />
++        <ImageGallery/>
+         <TestimonialsSection testimonials={testimonials} />
+         <FaqsSection faqs={faqs} />
+       </main>
+@@ -516,4 +572,3 @@ function HomePage() {
+   );
+ }
+ export default HomePage;
+-
+diff --git a/src/MbaGraduates.js b/src/MbaGraduates.js
+index 4d8ad2e..b7ff215 100644
+--- a/src/MbaGraduates.js
++++ b/src/MbaGraduates.js
+@@ -4,66 +4,49 @@ import { motion } from 'framer-motion'; // Import motion from framer-motion for
+ 
+ const MbaGraduates = () => {
+   return (
+-    <div>
+-    <Header />
+-    <div className="w-11/12 mx-auto px-4 mt-10">
+-      {/* Quote Section */}
+-      <div className="flex items-center justify-center mb-8">
+-        <div className="mr-4">
+-          <img
+-            src="https://example.com/path-to-your-avatar.png" // Replace with the actual path to your avatar image
+-            alt="Old Man Avatar"
+-            className="w-12 h-12 rounded-full"
+-          />
++    <div className="flex flex-col min-h-screen">
++      <Header />
++      <div className="flex flex-col italic mx-auto px-4 mt-10 mb-10 w-11/12 max-w-screen-lg">
++        {/* Quote Section */}
++        <div className="flex  mb-8">
++          <div className="mr-4">
++            <img
++              src="founder.jpeg" // Replace with the actual path to your avatar image
++              alt="Old Man Avatar"
++              className="w-100 h-100 rounded-full"
++            />
++          </div>
++          <p className="text-lg italic text-black-600">
++            "If you don't find a way to make money while you sleep, you<br></br> will work until you die." – Warren Buffett
++          </p>
++        </div>
++        <div>
++          <p className="text-black-500 font-italic mb-10">
++            <strong>Are you interested in turning a (sunk) cost into an asset</strong>? (Yeah, they don’t teach you this in business school)?
++          </p>
++          <p className="text-black-500 mb-10 font-italic">
++            That’s right - <strong>We offer you an easy way to monetize your application Essay</strong> (and yes, you don’t need to worry<br></br> about Marketing)!!
++          </p>
++          <div className="mx-auto"> {/* Apply mx-auto to center the div */}
++            <p className="text-black-500 font-italic">
++              <strong>How does it work?</strong> Three simple steps (just like your consulting interviews):
++            </p>
++            <ol className="list-decimal">
++              <li>
++                Upload the essays that got you business school interviews <strong>here.</strong>
++              </li>
++              <li>
++                Our AI model (if it sounds fancy, trust your instincts) <strong>sanitizes all sensitive information</strong> (yeah, no stalkers on <br></br>LinkedIn).
++              </li>
++              <li>
++                We pay you <strong>20% of revenue</strong> every time a customer buys your essay (royalties, babe!).
++              </li>
++              <li>
++                [Optional] We give you another opportunity to make money on the side with <strong>leads for paid mock interviews</strong> with <br></br>our clients (we know you still have some ski trips to pay).
++              </li>
++            </ol>
++          </div>
+         </div>
+-        <blockquote className="text-lg font-italic text-gray-600">
+-          "If you don't find a way to make money while you sleep, you will work until you die." – Warren Buffett
+-        </blockquote>
+-      </div>
+-
+-      {/* MBA Graduates Section */}
+-      <h1 className="text-4xl font-bold text-center mb-5 text-[#665eff]">
+-        <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: .5 }}>
+-          MBA Graduates
+-        </motion.span>
+-      </h1>
+-
+-      {/* Content Section */}
+-      <p className=" text-gray-500 mb-10">
+-        <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .5, duration: .5 }}>
+-          Are you interested in turning a <strong>(sunk) cost into an asset</strong>? (Yeah, they don’t teach you this in business school).
+-        </motion.span>
+-        <br />
+-        <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1, duration: .5 }}>
+-          That’s right - We offer you an easy way to <strong>monetize your application Essay</strong> (and yes, you don’t need to worry about Marketing)!!
+-        </motion.span>
+-        <br />
+-          <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5, duration: .5 }}>
+-            How does it work? Three simple steps (just like your consulting interviews):
+-          </motion.span>
+-          <ol className="list-decimal flex flex-col  mx-auto max-w-[600px]">
+-            <li>
+-              <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2, duration: .5 }}>
+-                Upload the essays that got you business school interviews here.
+-              </motion.span>
+-            </li>
+-            <li>
+-              <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.5, duration: .5 }}>
+-                Our AI model (if it sounds fancy, trust your instincts) sanitizes all sensitive information (yeah, no stalkers on LinkedIn).
+-              </motion.span>
+-            </li>
+-            <li>
+-              <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3, duration: .5 }}>
+-                We pay you 20% of revenue every time a customer buys your essay (royalties, babe!).
+-              </motion.span>
+-            </li>
+-            <li>
+-              <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3, duration: .5 }}>
+-                [Optional] We give you another opportunity to make money on the side with leads for paid mock interviews with our clients (we know you still have some ski trips to pay).
+-              </motion.span>
+-            </li>
+-          </ol>
+-        </p>
+       </div>
+       <Footer />
+     </div>
