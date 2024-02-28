@@ -1,6 +1,6 @@
-const FaqItem = ({ question, answer }) => {
+const FaqItem = ({ question, answer, isLastItem }) => {
     return (
-        <details className="shadow-lg rounded-lg p-6">
+        <details className={`p-6 ${isLastItem ? '' : 'border-b-2'} border-gray-500`}>
             <summary className="cursor-pointer text-lg font-semibold">
                 {question}
             </summary>
@@ -8,6 +8,5 @@ const FaqItem = ({ question, answer }) => {
         </details>
     );
 };
-
 
 export default FaqItem;

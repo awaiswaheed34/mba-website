@@ -27,16 +27,16 @@ const HomePage = () => {
   const reviews = ["Great product!", "Excellent service!", "Love it!"];
 
   const faqs = [
-    { question: "Question 1", answer: "Answer 1" },
-    { question: "Question 2", answer: "Answer 2" },
-    { question: "Question 3", answer: "Answer 3" },
-    { question: "Question 4", answer: "Answer 4" },
-    { question: "Question 5", answer: "Answer 5" },
-    { question: "Question 6", answer: "Answer 6" },
-    { question: "Question 7", answer: "Answer 7" },
-    { question: "Question 8", answer: "Answer 8" },
-    { question: "Question 9", answer: "Answer 9" },
-    { question: "Question 10", answer: "Answer 10" },
+    { question: "Why should I consider buying essay samples?", answer: "Well, why not? Instead of banking on secondhand advice from folks who didn’t make it into your dream MBA program, why not dive into essays from successful applicants who share your background (think country, industry, post-MBA goals, etc.)? It’s like getting insider tips without the hefty price tag of an MBA consultant." },
+    { question: "How many essay samples should I buy?", answer: "Totally your call! Some of our clients are happy with just one sample, while others can't get enough and go for 10 or more. On average, our most successful clients tend to go for about 3 essays. Trust us, they’re pretty engaging." },
+    { question: "Which essay samples should I buy if I’m applying to different business schools?", answer: "Since every business school has its own unique essay prompts and word limits, it's smart to pick essays tailored to each school you're applying to. Successful applicants know it's all about customizing your essays to fit what each school is really looking for." },
+    { question: "How did you create your Essay bank?", answer: "With a lot of care and a dash of strategy! We've compensated successful MBA students and graduates for their killer essays, building an unparalleled collection that truly reflects the diversity of a business school classroom." },
+    { question: "How does the money-back guarantee work?", answer: "We’re all about aligning our success with yours. If you don’t land an offer after using our Mock Interview bundle, or don’t snag an interview invite with our Holistic Application Review service, you get your money back. Simple as that" },
+    { question: "How quickly will I receive my essay after purchase?", answer: "We’re speedy! After confirming your payment, you'll get your essay sample(s) emailed to you in under 2 business days." },
+    { question: "What services do you offer? Can you help edit my essay? Mock interviews? Holistic application revision service?", answer: "Absolutely, we've got you covered! Whether you need a hand polishing your essay, a full-on makeover for your entire application, or some rigorous practice for your upcoming interviews, we're here to help. Dive into our 'Essay Revision' service to jazz up your writing, take advantage of our 'Holistic Application Review' to ensure your application shines from top to bottom, or gear up with our Mock Interviews to ace that thrilling interview invitation. Whatever your need, we’re here to support you in putting your best foot forward." },
+    { question: "I’m an MBA student/graduate from a top business school. How can I join your team?", answer: "Got essays gathering dust? Turn them into a goldmine with us and start earning royalties. If you’re interested, shoot us an email." },
+    { question: "What payment methods do you accept?", answer: "We’re flexible! PayPal, Venmo, Zelle, Revolut, or a classic bank transfer – whatever works for you." },
+
   ];
 
   const testimonials = [
