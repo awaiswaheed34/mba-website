@@ -1,5 +1,9 @@
 import React from 'react';
-import { Header, Footer } from './Homepage';
+
+import Header from './components/Compound/Header/Header';
+import Footer from './components/Compound/Footer/Footer';
+
+
 import { motion } from 'framer-motion'; // Import motion from framer-motion for animations
 
 const MbaGraduates = () => {

@@ -1,4 +1,9 @@
 import React from "react";
+
+import Footer from "./components/Compound/Footer/Footer";
+import Header from './components/Compound/Header/Header';
+
+
 import { useForm, Controller } from "react-hook-form";
 import {
   TextField,
@@ -11,7 +16,6 @@ import {
   FormControlLabel,
   Button,
 } from "@mui/material";
-import { Header, Footer } from "./Homepage";
 const handleClick = () => {
   // Open index.html in a new tab
   window.open('index.html');
