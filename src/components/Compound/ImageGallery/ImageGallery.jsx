@@ -2,7 +2,7 @@ const ImageGallery = () => {
     return (
         <div className="flex flex-col justify-center items-center ">
             <div>
-                <h1 className="text-4xl font-bold mb-3">Trusted by non-traditional applicants and employees from leading pre-MBA firms</h1>
+                <h1 className="text-3xl font-bold mb-3">Trusted by non-traditional applicants and employees from leading pre-MBA firms</h1>
             </div>
             <div className="flex justify-center items-center p-4 w-4/5">
                 <img src="i.png" alt="Image 1" style={{ width: '10%', height: '90%' }} className="mr-4" />
