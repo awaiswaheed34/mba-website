@@ -41,42 +41,42 @@ const HomePage = () => {
 
   const testimonials = [
     {
-      image: "1.png",
+      image: "1.jpg",
       name: "GSB Class of 2024",
       rating: "★★★★★",
       review:
         "I was totally lost when I started drafting my essay. After reading five essays from successful applicants with a similar background, I got many ideas on how to best share my personal story. 100% recommend MBA Essay Genius!",
     },
     {
-      image: "2.png",
+      image: "2.jpg",
       name: "HBS Class of 2025",
       rating: "★★★★★",
       review:
         "Having a PE background, I know that companies offering services on a 'success fee' basis truly believe in their value. I did the mock interviews for free and was super happy to pay MBA Essay Genius after getting the 'YES!' from Harvard.",
     },
     {
-      image: "3.png",
+      image: "3.jpg",
       name: "HBS Class of 2024",
       rating: "★★★★★",
       review:
         "The essay bank is such a great idea. I know MBB consultants share resources, but as someone from a non-traditional background, it was super helpful to see how spectacular essays from successful MBA applicants are.",
     },
     {
-      image: "4.png",
+      image: "4.jpg",
       name: "Wharton Class of 2025",
       rating: "★★★★★",
       review:
         "This was a game-changer for me! I purchased a few essay samples and then the essay revision service. I 100% recommend it. Their comprehensive review and suggestions helped me articulate my story clearly, making my application much stronger.",
     },
     {
-      image: "5.png",
+      image: "5.jpg",
       name: "HBS Class of 2025",
       rating: "★★★★★",
       review:
         "I was impressed by the breadth of approaches to Harvard’s essay (it was kind of addictive, tbh!). It was great to read different personal stories from previous MBA graduates and understand which style suited me best.",
     },
     {
-      image: "6.png",
+      image: "6.jpg",
       name: "GSB Class of 2025",
       rating: "★★★★★",
       review:
